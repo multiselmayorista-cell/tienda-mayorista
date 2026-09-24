@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiservicios El Mayorista | Tienda Oficial</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --flomil-pink: #ec4899;
+            --flomil-gradient: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #d946ef 100%);
+            --price-green: #059669;
+            --wa-green: #22c55e;
+            --wa-green-dark: #16a34a;
+            --bg-page: #f8fafc;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-page); color: #0f172a; padding-bottom: 120px; }
+
+        /* Barra Superior Oficial */
+        .top-bar {
+            background: #090d16;
+            color: #cbd5e1;
+            padding: 9px 16px;
+            font-size: 0.84rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 2px solid #1e293b;
+        }
+        .top-bar-item { display: flex; align-items: center; gap: 6px; }
+        .num-blue { color: #38bdf8; font-weight: 800; }
+        .ruc-tag { background: #1e293b; border: 1px solid #334155; padding: 2px 8px; border-radius: 4px; color: #f8fafc; font-weight: 700; }
+
+        .flomil-top-badge {
+            background: var(--flomil-gradient);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Encabezado Principal */
+        header {
+            background: linear-gradient(180deg, #0b1120 0%, #1e293b 100%);
+            color: white;
+            padding: 26px 20px 20px 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .brand-name {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .brand-subtitle { font-size: 0.95rem; color: #94a3b8; margin-top: 4px; font-weight: 600; }
+       
+        .info-pills-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 14px 0 10px 0;
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+        .pill-flomil { background: rgba(236,72,153,0.15); border: 1.5px solid #f43f5e; color: #fda4af; }
+        .pill-proveedores { background: rgba(56, 189, 248, 0.15); border: 1.5px solid #0284c7; color: #bae6fd; }
+        .pill-local { background: rgba(34, 197, 94, 0.15); border: 1.5px solid #22c55e; color: #bbf7d0; }
+
+        /* Botones de Contacto Directo en Cabecera */
+        .direct-chat-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 14px 0 6px 0;
+        }
+        .btn-chat-direct {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1.5px solid #38bdf8;
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-chat-direct:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+        }
+        .btn-chat-mayorista {
+            border-color: #f59e0b;
+        }
+        .btn-chat-mayorista:hover {
+            background: #f59e0b;
+            color: #0f172a;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Tira de Servicios Especiales con Botón Cotizador */
+        .services-strip {
+            background: linear-gradient(90deg, #f8fafc 0%, #e0f2fe 50%, #f8fafc 100%);
+            border-top: 1.5px solid #bae6fd;
+            border-bottom: 1.5px solid #bae6fd;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .btn-cotizar-servicio {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(2, 132, 199, 0.35);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-cotizar-servicio:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #0369a1, #075985);
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45);
+        }
+
+        /* Buscador */
+        .search-wrapper { max-width: 650px; margin: 12px auto 0 auto; position: relative; }
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border-radius: 30px;
+            border: 2px solid #334155;
+            background: #090d16;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.25s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .search-input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            background: #0f172a;
+        }
+        .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; }
+
+        /* Categorías Deslizables */
+        .cat-nav-wrapper {
+            max-width: 1200px;
+            margin: 18px auto 0 auto;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .scroll-btn {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            color: #0f172a;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .scroll-btn:hover { background: #0284c7; color: white; border-color: #0284c7; transform: scale(1.05); }
+
+        .categories-bar {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            padding: 8px 4px;
+            width: 100%;
+        }
+        .categories-bar::-webkit-scrollbar { display: none; }
+
+        .cat-btn {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 9px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #475569;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cat-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .cat-btn.active {
+            background: #0284c7;
+            color: white;
+            border-color: #0284c7;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+        }
+
+        .cat-btn-flomil {
+            background: linear-gradient(135deg, #fff1f2, #fdf2f8) !important;
+            border-color: #f43f5e !important;
+            color: #be185d !important;
+        }
+        .cat-btn-flomil.active, .cat-btn-flomil:hover {
+            background: var(--flomil-gradient) !important;
+            color: white !important;
+            border-color: #f43f5e !important;
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.5) !important;
+        }
+
+        /* Cuadrícula de Productos */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 22px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            border: 1.5px solid #e2e8f0;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 22px rgba(0,0,0,0.1);
+            border-color: #cbd5e1;
+        }
+
+        .badge-cat {
+            align-self: flex-start;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        .badge-flomil {
+            background: var(--flomil-gradient);
+            color: white;
+            box-shadow: 0 2px 8px rgba(244, 63, 94, 0.35);
+        }
+        .badge-ropa { background: #fdf2f8; color: #db2777; border: 1px solid #fbcfe8; }
+        .badge-calzado { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        .badge-libreria { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+        .badge-default { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+
+        .card h3 { font-size: 1.1rem; color: #0f172a; margin-bottom: 5px; font-weight: 800; line-height: 1.35; }
+        .card .detail { font-size: 0.84rem; color: #64748b; margin-bottom: 14px; flex-grow: 1; }
+
+        .price-box {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+            margin-top: auto;
+        }
+        .main-price {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: var(--price-green);
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .unit-label { font-size: 0.82rem; color: #64748b; font-weight: 600; }
+       
+        .sub-prices {
+            font-size: 0.82rem;
+            color: #334155;
+            margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-weight: 600;
+        }
+        .sub-prices strong { color: #0284c7; }
+
+        .stock-tag {
+            font-size: 0.78rem;
+            margin-top: 10px;
+            font-weight: 800;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .in-stock { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .low-stock { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+
+        .btn-select {
+            margin-top: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-select:hover {
+            background: linear-gradient(135deg, #0369a1, #075985);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(2, 132, 199, 0.35);
+        }
+
+        /* Botón Flotante Lateral de WhatsApp */
+        .floating-help-btn {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 35px;
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.45);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            z-index: 99;
+            border: 2px solid #ffffff;
+            font-weight: 800;
+            font-size: 0.9rem;
+            transition: all 0.25s;
+            animation: pulse-wa 2.5s infinite;
+        }
+        .floating-help-btn:hover {
+            transform: scale(1.06) translateY(-3px);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.6);
+        }
+
+        @keyframes pulse-wa {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6); }
+            70% { box-shadow: 0 0 0 14px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* Menú Emergente de Contacto Directo */
+        .chat-menu-popup {
+            display: none;
+            position: fixed;
+            bottom: 145px;
+            right: 20px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            border: 1.5px solid #e2e8f0;
+            width: 290px;
+            padding: 16px;
+            z-index: 101;
+        }
+        .chat-menu-popup h4 { font-size: 1rem; color: #0f172a; margin-bottom: 4px; font-weight: 800; }
+        .chat-menu-popup p { font-size: 0.8rem; color: #64748b; margin-bottom: 12px; }
+       
+        .chat-option-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 0.86rem;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .chat-option-btn:hover {
+            background: #eff6ff;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: translateX(3px);
+        }
+        .chat-option-btn.mayorista:hover {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #b45309;
+        }
+
+        /* Barra Inferior Flotante de Carrito */
+        .cart-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(180deg, #0f172a, #090d16);
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -6px 20px rgba(0,0,0,0.3);
+            z-index: 100;
+            border-top: 2px solid #38bdf8;
+        }
+        .cart-info strong { color: #38bdf8; font-size: 1.35rem; font-weight: 900; }
+       
+        .btn-view-cart {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-view-cart:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5); }
+
+        /* Modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(3px);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .modal-content {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        .modal-close { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #64748b; line-height: 1; }
+       
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: #334155; }
+        .form-control { width: 100%; padding: 11px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 0.95rem; font-weight: 500; }
+        .form-control:focus { outline: none; border-color: #0284c7; }
+
+        .chips-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+        .chip {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 0.88rem;
+            background: #f8fafc;
+            color: #334155;
+            user-select: none;
+            transition: all 0.15s;
+        }
+        .chip:hover { border-color: #0284c7; }
+        .chip.selected {
+            background: #0284c7;
+            color: white;
+            border-color: #0284c7;
+            box-shadow: 0 3px 8px rgba(2, 132, 199, 0.35);
+        }
+
+        .qty-wrapper { display: flex; align-items: center; gap: 14px; margin-top: 6px; }
+        .qty-btn { width: 36px; height: 36px; border-radius: 8px; border: 2px solid #cbd5e1; background: #fff; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+        .qty-val { font-weight: 900; font-size: 1.2rem; min-width: 25px; text-align: center; }
+
+        .modal-actions { display: flex; flex-direction: column; gap: 9px; margin-top: 18px; }
+        .btn-keep-buying { background: #f1f5f9; color: #334155; border: 1.5px solid #cbd5e1; padding: 12px; border-radius: 10px; font-weight: 800; cursor: pointer; }
+        .btn-add-now { background: #0284c7; color: white; border: none; padding: 13px; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 0.98rem; }
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 900;
+            font-size: 1.05rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+        }
+       
+        .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1.5px solid #f1f5f9; }
+        .cart-item-meta { font-size: 0.84rem; color: #64748b; margin-top: 3px; font-weight: 500; }
+
+        .alert-box {
+            background: #fffbeb;
+            border-left: 5px solid #f59e0b;
+            padding: 12px;
+            font-size: 0.84rem;
+            color: #92400e;
+            margin: 14px 0;
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+
+        .local-notice {
+            background: #eff6ff;
+            border-left: 5px solid #0284c7;
+            padding: 10px;
+            font-size: 0.82rem;
+            color: #1e40af;
+            margin-bottom: 12px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra Superior Oficial -->
+    <div class="top-bar">
+        <div class="top-bar-item">
+            <span>📍 San Juan La Orilla</span>
+            <span style="color:#475569;">|</span>
+            <span class="ruc-tag">RUC: 10701759015</span>
+            <span style="color:#475569;">|</span>
+            <span>Emitimos Boleta o Factura</span>
+        </div>
+        <div class="top-bar-item">
+            <span>📞 Pedidos:</span> <span class="num-blue">965 425 458</span>
+        </div>
+        <div class="flomil-top-badge">
+            <span>🌸</span> EMBAJADORES OFICIALES FLOMIL <span>🌸</span>
+        </div>
+    </div>
+
+    <!-- Encabezado Principal -->
+    <header>
+        <div class="brand-name">MULTISERVICIOS EL MAYORISTA</div>
+        <p class="brand-subtitle">Venta por Mayor y Menor | Almacén Central</p>
+       
+        <div class="info-pills-container">
+            <div class="pill pill-flomil">
+                🌸 Embajadores Oficiales de la Marca FLOMIL (Carteras, Mochilas y Hogar)
+            </div>
+            <div class="pill pill-proveedores">
+                🤝 De la mano con los mejores proveedores e importadores del Perú
+            </div>
+            <div class="pill pill-local">
+                🛵 Ventas y despachos virtuales exclusivamente a nivel local
+            </div>
+        </div>
+
+        <div class="direct-chat-buttons">
+            <button class="btn-chat-direct" onclick="contactarAsesorDirecto('asesor')">
+                <span>💬</span> Hablar con Asesor de Ventas
+            </button>
+            <button class="btn-chat-direct btn-chat-mayorista" onclick="contactarAsesorDirecto('mayorista')">
+                <span>🏢</span> Atención Servicio Mayorista
+            </button>
+        </div>
+
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="buscador" class="search-input" placeholder="Buscar producto, detalle, código o categoría...">
+        </div>
+    </header>
+
+    <!-- Tira de Servicios Especiales con Botón Cotizador Interactivo -->
+    <div class="services-strip">
+        <span>🧵 <strong>Servicio Especializado:</strong> Confección y Estampado de Prendas Deportivas y Publicitarias</span>
+        <button class="btn-cotizar-servicio" onclick="abrirModalConfeccion()">
+            ✨ Cotizar Confección / Estampado 👉
+        </button>
+    </div>
+
+    <!-- Barra de Categorías Deslizable -->
+    <div class="cat-nav-wrapper">
+        <button class="scroll-btn" onclick="desplazarCategorias(-240)" title="Ver categorías anteriores">◀</button>
+        <div class="categories-bar" id="contenedor-categorias">
+            <button class="cat-btn active" onclick="filtrarCategoria('todas', this)">✨ Todos los productos</button>
+            {% for cat in categorias %}
+            {% set c_lower = cat|string|lower %}
+            <button class="cat-btn {% if 'flomil' in c_lower %}cat-btn-flomil{% endif %}"
+                    onclick="filtrarCategoria('{{ cat }}', this)">
+                {% if 'flomil' in c_lower %}🌸 FLOMIL ✨
+                {% elif 'ropa' in c_lower or 'media' in c_lower %}👗 {{ cat|capitalize }}
+                {% elif 'calzado' in c_lower or 'bota' in c_lower or 'zapato' in c_lower %}👞 {{ cat|capitalize }}
+                {% elif 'librer' in c_lower %}📚 {{ cat|capitalize }}
+                {% elif 'mochila' in c_lower or 'cartera' in c_lower or 'billetera' in c_lower %}🎒 {{ cat|capitalize }}
+                {% elif 'espejo' in c_lower or 'maquillaje' in c_lower %}💄 {{ cat|capitalize }}
+                {% else %}🏷️ {{ cat|capitalize }}{% endif %}
+            </button>
+            {% endfor %}
+        </div>
+        <button class="scroll-btn" onclick="desplazarCategorias(240)" title="Ver más categorías">▶</button>
+    </div>
+
+    <!-- Cuadrícula de Productos -->
+    <div class="grid" id="contenedor-productos">
+        {% for p in productos %}
+        {% set cat_lower = p.categoria|string|lower %}
+        <div class="card producto-item"
+             data-categoria="{{ cat_lower }}"
+             data-texto="{{ p.codigo|string|lower }} {{ cat_lower }} {{ p.descripcion|string|lower }}">
+           
+            <span class="badge-cat
+                {% if 'flomil' in cat_lower %}badge-flomil
+                {% elif 'ropa' in cat_lower or 'media' in cat_lower %}badge-ropa
+                {% elif 'calzado' in cat_lower or 'bota' in cat_lower or 'zapato' in cat_lower %}badge-calzado
+                {% elif 'librer' in cat_lower %}badge-libreria
+                {% else %}badge-default{% endif %}">
+                {% if 'flomil' in cat_lower %}🌸 FLOMIL
+                {% else %}{{ p.categoria }}{% endif %}
+            </span>
+
+            <h3>{{ p.descripcion if p.descripcion else p.categoria }}</h3>
+            {% if p.codigo %}
+            <p class="detail">Cód Ref: <strong>#{{ p.codigo }}</strong></p>
+            {% endif %}
+
+            <div class="price-box">
+                <div class="main-price">S/ {{ "%.2f"|format(p.precio_unit) }} <span class="unit-label">x Unidad</span></div>
+               
+                <div class="sub-prices">
+                    {% if p.precio_cuarto > 0 %}
+                    <div>📦 1/4 Docena: <strong>S/ {{ "%.2f"|format(p.precio_cuarto) }}</strong></div>
+                    {% endif %}
+                    {% if p.precio_docena > 0 %}
+                    <div>🏷️ Docena Mayorista: <strong>S/ {{ "%.2f"|format(p.precio_docena) }}</strong></div>
+                    {% endif %}
+                    {% if p.precio_promo > 0 %}
+                    <div style="color:#e11d48;">🔥 Oferta Promo: <strong>S/ {{ "%.2f"|format(p.precio_promo) }}</strong></div>
+                    {% endif %}
+                </div>
+
+                <div class="stock-tag {{ 'in-stock' if p.stock > 0 else 'low-stock' }}">
+                    ● Stock: {{ p.stock }} disponibles
+                </div>
+
+                <button class="btn-select"
+                    onclick="abrirModalProducto('{{ p.descripcion if p.descripcion else p.categoria }}', {{ p.precio_unit }}, '{{ p.codigo }}', '{{ cat_lower }}', {{ p.precio_cuarto }}, {{ p.precio_docena }})">
+                    🛍️ Elegir Talla y Pedir
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Botón Flotante Lateral de WhatsApp -->
+    <div class="floating-help-btn" onclick="toggleChatPopup()">
+        <span style="font-size:1.3rem;">💬</span>
+        <span>¿Dudas? Chatea con Nosotros</span>
+    </div>
+
+    <!-- Menú Emergente de Contacto Directo -->
+    <div class="chat-menu-popup" id="chatPopup">
+        <h4>Atención Personalizada</h4>
+        <p>Elige con quién deseas comunicarte directamente:</p>
+       
+        <button class="chat-option-btn" onclick="contactarAsesorDirecto('asesor')">
+            <span style="font-size:1.2rem;">🙋‍♂️</span>
+            <div>
+                <strong>Asesor de Ventas</strong>
+                <div style="font-size:0.75rem; color:#64748b; font-weight:normal;">Consultas de productos y stock</div>
+            </div>
+        </button>
+
+        <button class="chat-option-btn mayorista" onclick="contactarAsesorDirecto('mayorista')">
+            <span style="font-size:1.2rem;">🏢</span>
+            <div>
+                <strong>Servicio Mayorista</strong>
+                <div style="font-size:0.75rem; color:#64748b; font-weight:normal;">Precios por docena y cotizaciones</div>
+            </div>
+        </button>
+    </div>
+
+    <!-- Barra Inferior Flotante de Carrito -->
+    <div class="cart-bar">
+        <div class="cart-info">
+            <span id="cant-items" style="color:#94a3b8;">0 artículos</span> | Total: <strong id="total-pedido">S/ 0.00</strong>
+        </div>
+        <button class="btn-view-cart" onclick="abrirModalCarrito()">
+            🛒 Ver Pedido (<span id="btn-count">0</span>)
+        </button>
+    </div>
+
+    <!-- MODAL 1: Selección de Talla, Color y Cantidad -->
+    <div class="modal" id="modalProducto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 id="modal-prod-nombre" style="font-size:1.2rem; color:#0f172a;">Producto</h2>
+                    <p id="modal-prod-precio" style="color:var(--price-green); font-weight:800; font-size:1.2rem; margin-top:2px;">S/ 0.00</p>
+                </div>
+                <button class="modal-close" onclick="cerrarModal('modalProducto')">&times;</button>
+            </div>
+
+            <!-- Tallas Ajustadas Exactas -->
+            <div class="form-group" id="grupo-tallas">
+                <label>Selecciona tu Talla o Medida:</label>
+                <div class="chips-group" id="contenedor-tallas"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Color / Preferencia (Detectado automáticamente):</label>
+                <input type="text" id="modal-color" class="form-control" placeholder="Color detectado">
+            </div>
+
+            <div class="form-group">
+                <label>Cantidad a llevar:</label>
+                <div class="qty-wrapper">
+                    <button class="qty-btn" onclick="cambiarCantidadModal(-1)">-</button>
+                    <span class="qty-val" id="modal-cant-val">1</span>
+                    <button class="qty-btn" onclick="cambiarCantidadModal(1)">+</button>
+                    <span id="modal-subtotal-texto" style="margin-left: auto; font-weight:800; color:#0f172a; font-size:1.05rem;">Subtotal: S/ 0.00</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-add-now" onclick="confirmarAgregar(false)">🛒 Agregar y Seguir Comprando</button>
+                <button class="btn-whatsapp" onclick="confirmarAgregar(true)">⚡ Comprar Ya / Ir al Carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Cotizador de Confección -->
+    <div class="modal" id="modalConfeccion">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2 style="font-size:1.25rem; color:#0f172a;">🧵 Confección y Estampado</h2>
+                    <p style="font-size:0.85rem; color:#64748b; margin-top:2px;">Prendas deportivas y publicitarias al por mayor</p>
+                </div>
+                <button class="modal-close" onclick="cerrarModal('modalConfeccion')">&times;</button>
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Prenda / Servicio:</label>
+                <select id="conf-tipo" class="form-control">
+                    <option value="Camisetas Deportivas (Personalizadas)">⚽ Camisetas Deportivas (Fútbol / Vóley)</option>
+                    <option value="Conjuntos Deportivos Completos">🏆 Conjuntos Deportivos (Camiseta + Short)</option>
+                    <option value="Polos Publicitarios (Campaña / Empresa)">👕 Polos Publicitarios para Empresas o Eventos</option>
+                    <option value="Poleras Clásicas / Con Capucha">🧥 Poleras Deportivas y Urbanas</option>
+                    <option value="Servicio de Estampado de Nombres y Números">✨ Solo Estampado (Nombres, Números, Logos en DTF/Vinil)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Cantidad aproximada requerida:</label>
+                <input type="text" id="conf-cantidad" class="form-control" placeholder="Ej: 12 camisetas, 2 docenas, 50 polos...">
+            </div>
+
+            <div class="form-group">
+                <label>Detalles del diseño o colores del equipo/empresa:</label>
+                <textarea id="conf-detalles" class="form-control" rows="3" placeholder="Ej: Color azul con franjas blancas, cuello V, logo en el pecho, nombres en la espalda..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Tu Nombre o Institución:</label>
+                <input type="text" id="conf-nombre" class="form-control" placeholder="Nombre de contacto o equipo">
+            </div>
+
+            <div class="alert-box">
+                ℹ️ <strong>Condiciones de Confección:</strong> Trabajo bajo pedido con <strong>50% de anticipo</strong> y plazo de producción estimado de <strong>14 a 15 días hábiles</strong>.
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-whatsapp" onclick="enviarCotizacionConfeccionWhatsApp()">
+                    📲 Enviar Datos para Proforma a WhatsApp
+                </button>
+                <button class="btn-keep-buying" onclick="cerrarModal('modalConfeccion')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Carrito y Despacho con Auto-Impresión -->
+    <div class="modal" id="modalCarrito">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 style="font-size:1.3rem;">🛒 Tu Lista de Compra</h2>
+                <button class="modal-close" onclick="cerrarModal('modalCarrito')">&times;</button>
+            </div>
+
+            <div class="local-notice">
+                ⚠️ <strong>Aviso Importante de Despacho:</strong> Nuestras ventas virtuales son <strong>estrictamente de cobertura local</strong>. No realizamos envíos nacionales por los altos costos de transporte.
+            </div>
+
+            <div id="carrito-lista" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
+
+            <div style="display:flex; justify-content:space-between; font-weight:900; font-size:1.25rem; margin-bottom:15px; border-top:2px solid #e2e8f0; padding-top:10px;">
+                <span>Total Estimado:</span>
+                <span id="cart-total-final" style="color:var(--price-green);">S/ 0.00</span>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre Completo / Razón Social:</label>
+                <input type="text" id="cliente-nombre" class="form-control" placeholder="Nombre de quien recibe">
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Comprobante:</label>
+                <select id="tipo-comprobante" class="form-control">
+                    <option value="Nota de Venta">Nota de Venta / Simple</option>
+                    <option value="Boleta de Venta">Boleta de Venta (Con DNI)</option>
+                    <option value="Factura">Factura (Con RUC)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Ruta de Envío Local:</label>
+                <select id="ruta-entrega" class="form-control">
+                    <option value="Recojo en Tienda (San Juan La Orilla)">🏪 Recojo en Tienda (San Juan La Orilla)</option>
+                    <option value="Envío a San Juan Antiguo (Vía Fluvial / Bote)">🚤 Envío a San Juan Antiguo (Vía Fluvial / Bote)</option>
+                    <option value="Envío a Ponal (Vía Terrestre / Carro)">🚗 Envío a Ponal (Vía Terrestre / Carro)</option>
+                    <option value="Envío a Colorado (Carro o Bote según coordinación)">🚗🚤 Envío a Colorado (Carro o Bote según coordinación)</option>
+                    <option value="Envío a Malvinas (Carro o Bote según coordinación)">🚗🚤 Envío a Malvinas (Carro o Bote según coordinación)</option>
+                </select>
+            </div>
+
+            <div class="alert-box">
+                ⚠️ <strong>Condiciones de entrega:</strong> Cancelación total de la mercadería previa coordinación. El flete/transporte se cancela contra entrega en destino.
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-whatsapp" onclick="enviarPedidoWhatsApp()">📲 Confirmar y Enviar Pedido a WhatsApp</button>
+                <button class="btn-keep-buying" onclick="cerrarModal('modalCarrito')">➕ Seguir agregando más prendas</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let carrito = [];
+        let itemSeleccionado = null;
+        let cantidadModal = 1;
+        let tallaSeleccionada = '';
+
+        function desplazarCategorias(distancia) {
+            document.getElementById('contenedor-categorias').scrollBy({ left: distancia, behavior: 'smooth' });
+        }
+
+        let categoriaSeleccionada = 'todas';
+        function filtrarCategoria(cat, boton) {
+            categoriaSeleccionada = cat.toLowerCase().trim();
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            boton.classList.add('active');
+            aplicarFiltros();
+        }
+
+        const buscador = document.getElementById('buscador');
+        buscador.addEventListener('input', aplicarFiltros);
+
+        function aplicarFiltros() {
+            const query = buscador.value.toLowerCase().trim();
+            const productos = document.querySelectorAll('.producto-item');
+
+            productos.forEach(card => {
+                const prodCat = card.getAttribute('data-categoria');
+                const prodTexto = card.getAttribute('data-texto');
+
+                const coincideCategoria = (categoriaSeleccionada === 'todas') || prodCat.includes(categoriaSeleccionada);
+                const coincideTexto = !query || prodTexto.includes(query);
+
+                card.style.display = (coincideCategoria && coincideTexto) ? 'flex' : 'none';
+            });
+        }
+
+        function extraerColorInteligente(nombre) {
+            const txt = (' ' + nombre.toLowerCase() + ' ').replace(/[^a-záéíóúñ]/g, ' ');
+            const colores = [
+                { match: 'blanca', nombre: 'Blanco' },
+                { match: 'blanco', nombre: 'Blanco' },
+                { match: 'negra', nombre: 'Negro' },
+                { match: 'negro', nombre: 'Negro' },
+                { match: 'azul', nombre: 'Azul' },
+                { match: 'marino', nombre: 'Azul Marino' },
+                { match: 'roja', nombre: 'Rojo' },
+                { match: 'rojo', nombre: 'Rojo' },
+                { match: 'rosada', nombre: 'Rosado' },
+                { match: 'rosado', nombre: 'Rosado' },
+                { match: 'verde', nombre: 'Verde' },
+                { match: 'amarillo', nombre: 'Amarillo' },
+                { match: 'plomo', nombre: 'Plomo / Gris' },
+                { match: 'gris', nombre: 'Plomo / Gris' },
+                { match: 'marron', nombre: 'Marrón' },
+                { match: 'cafe', nombre: 'Café / Marrón' },
+                { match: 'beige', nombre: 'Beige' },
+                { match: 'celeste', nombre: 'Celeste' },
+                { match: 'fucsia', nombre: 'Fucsia' },
+                { match: 'lila', nombre: 'Lila / Morado' },
+                { match: 'morado', nombre: 'Lila / Morado' },
+                { match: 'naranja', nombre: 'Naranja' }
+            ];
+
+            for (let c of colores) {
+                if (txt.includes(' ' + c.match + ' ')) {
+                    return c.nombre;
+                }
+            }
+            return 'Color Original / Foto';
+        }
+
+        /* DETERMINACIÓN EXACTA DE TALLAS COMERCIALES */
+        function obtenerTallasParaProducto(nombre, categoria, precio) {
+            const texto = (nombre + ' ' + categoria).toLowerCase();
+           
+            // Si el nombre ya trae una talla explícita en paréntesis ej: (38) o (M)
+            const tallaParentesis = nombre.match(/\((.*?)\)/);
+            if (tallaParentesis) {
+                return [tallaParentesis[1].toUpperCase()];
+            }
+
+            // 1. Botas Tallas Especiales 43 y 44 (código y precio mayor a S/ 45)
+            if (texto.includes('bota') && (texto.includes('43') || texto.includes('44') || precio >= 48)) {
+                return ['43', '44'];
+            }
+
+            // 2. Botas Estándar de Varón o Dama (Precio normal S/ 45.00: estrictamente de 36 a 42)
+            if (texto.includes('bota')) {
+                return ['36', '37', '38', '39', '40', '41', '42'];
+            }
+
+            // 3. Calzado / Zapatos de Dama
+            const esDama = /\b(d|d\.|dama|mujer)\b/i.test(nombre) || texto.includes('tobillera');
+            if (esDama && (texto.includes('zapato') || texto.includes('sandalia') || texto.includes('calzado') || texto.includes('media'))) {
+                return ['35', '36', '37', '38', '39'];
+            }
+
+            // 4. Chuteras y deportivo
+            if (texto.includes('chutera') || texto.includes('zapatilla') || texto.includes('futbol')) {
+                return ['36', '37', '38', '39', '40', '41', '42', '43'];
+            }
+
+            // 5. Calzado general varón estándar
+            if (texto.includes('calzado') || texto.includes('zapato') || texto.includes('venus')) {
+                return ['38', '39', '40', '41', '42'];
+            }
+
+            // 6. Ropa / Prendas textiles
+            if (texto.includes('ropa') || texto.includes('polera') || texto.includes('short') || texto.includes('bermuda') || texto.includes('faja')) {
+                return ['S', 'M', 'L', 'XL', 'Estándar'];
+            }
+
+            return ['Estándar / Único'];
+        }
+
+        function abrirModalProducto(nombre, precio, codigo, categoria, pCuarto, pDocena) {
+            itemSeleccionado = { nombre, precio, codigo, categoria, pCuarto, pDocena };
+            cantidadModal = 1;
+           
+            document.getElementById('modal-prod-nombre').textContent = nombre;
+            document.getElementById('modal-prod-precio').textContent = `S/ ${precio.toFixed(2)} c/u`;
+            document.getElementById('modal-color').value = extraerColorInteligente(nombre);
+            document.getElementById('modal-cant-val').textContent = '1';
+            actualizarSubtotalModal();
+
+            const contenedorTallas = document.getElementById('contenedor-tallas');
+            contenedorTallas.innerHTML = '';
+           
+            // Pasa el precio para saber si es bota normal (36 a 42) o especial (43 y 44)
+            const tallas = obtenerTallasParaProducto(nombre, categoria, precio);
+            tallaSeleccionada = tallas[0];
+
+            tallas.forEach((talla, index) => {
+                const chip = document.createElement('div');
+                chip.className = `chip ${index === 0 ? 'selected' : ''}`;
+                chip.textContent = talla;
+                chip.onclick = () => {
+                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+                    chip.classList.add('selected');
+                    tallaSeleccionada = talla;
+                };
+                contenedorTallas.appendChild(chip);
+            });
+
+            document.getElementById('modalProducto').style.display = 'flex';
+        }
+
+        function cambiarCantidadModal(delta) {
+            cantidadModal = Math.max(1, cantidadModal + delta);
+            document.getElementById('modal-cant-val').textContent = cantidadModal;
+            actualizarSubtotalModal();
+        }
+
+        function calcularPrecioAplicable(item, cant) {
+            if (cant >= 12 && item.pDocena > 0) return item.pDocena / 12;
+            if (cant >= 3 && item.pCuarto > 0) return item.pCuarto / 3;
+            return item.precio;
+        }
+
+        function actualizarSubtotalModal() {
+            const precioUnit = calcularPrecioAplicable(itemSeleccionado, cantidadModal);
+            const subtotal = precioUnit * cantidadModal;
+            document.getElementById('modal-subtotal-texto').textContent = `Subtotal: S/ ${subtotal.toFixed(2)}`;
+        }
+
+        function confirmarAgregar(irAlCarrito) {
+            const color = document.getElementById('modal-color').value.trim() || 'Color Original';
+            const precioUnit = calcularPrecioAplicable(itemSeleccionado, cantidadModal);
+
+            carrito.push({
+                nombre: itemSeleccionado.nombre,
+                codigo: itemSeleccionado.codigo,
+                talla: tallaSeleccionada,
+                color: color,
+                cantidad: cantidadModal,
+                precioUnit: precioUnit,
+                subtotal: precioUnit * cantidadModal
+            });
+
+            actualizarBarraCarrito();
+            cerrarModal('modalProducto');
+
+            if (irAlCarrito) {
+                abrirModalCarrito();
+            }
+        }
+
+        function actualizarBarraCarrito() {
+            const totalArticulos = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            const totalSoles = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+
+            document.getElementById('cant-items').textContent = `${totalArticulos} prenda${totalArticulos === 1 ? '' : 's'}/artículo(s)`;
+            document.getElementById('total-pedido').textContent = `S/ ${totalSoles.toFixed(2)}`;
+            document.getElementById('btn-count').textContent = totalArticulos;
+        }
+
+        function abrirModalCarrito() {
+            if (carrito.length === 0) {
+                alert("Tu carrito está vacío. Elige una prenda o producto para empezar.");
+                return;
+            }
+
+            const lista = document.getElementById('carrito-lista');
+            lista.innerHTML = '';
+
+            carrito.forEach((item, index) => {
+                const fila = document.createElement('div');
+                fila.className = 'cart-item-row';
+                fila.innerHTML = `
+                    <div style="flex:1;">
+                        <strong style="font-size:0.95rem; color:#0f172a;">${item.nombre}</strong>
+                        <div class="cart-item-meta">Talla: <b>${item.talla}</b> | Color: <b>${item.color}</b> \vert{} Ref: #${item.codigo}</div>
+                        <div style="font-weight:800; color:var(--price-green); font-size:0.9rem; margin-top:2px;">
+                            ${item.cantidad} x S/ ${item.precioUnit.toFixed(2)} = S/ ${item.subtotal.toFixed(2)}
+                        </div>
+                    </div>
+                    <button onclick="eliminarDelCarrito(${index})" style="background:none; border:none; color:#ef4444; font-weight:bold; cursor:pointer; font-size:1.2rem; padding:0 8px;">✕</button>
+                `;
+                lista.appendChild(fila);
+            });
+
+            const totalSoles = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+            document.getElementById('cart-total-final').textContent = `S/ ${totalSoles.toFixed(2)}`;
+            document.getElementById('modalCarrito').style.display = 'flex';
+        }
+
+        function eliminarDelCarrito(index) {
+            carrito.splice(index, 1);
+            actualizarBarraCarrito();
+            if (carrito.length === 0) {
+                cerrarModal('modalCarrito');
+            } else {
+                abrirModalCarrito();
+            }
+        }
+
+        function abrirModalConfeccion() {
+            document.getElementById('modalConfeccion').style.display = 'flex';
+        }
+
+        function enviarCotizacionConfeccionWhatsApp() {
+            const servicio = document.getElementById('conf-tipo').value;
+            const cantidad = document.getElementById('conf-cantidad').value.trim() || 'A consultar';
+            const detalles = document.getElementById('conf-detalles').value.trim() || 'Sin detalles adicionales';
+            const nombre = document.getElementById('conf-nombre').value.trim() || 'Cliente Interesado';
+
+            const mensaje =
+`╔═════════════════════════════╗
+  🧵 *SOLICITUD DE COTIZACIÓN*
+   *CONFECCIÓN Y ESTAMPADO*
+╚═════════════════════════════╝
+🏢 *MULTISERVICIOS EL MAYORISTA*
+🌸 RUC: 10701759015
+
+👤 *CONTACTO:* ${nombre}
+📋 *SERVICIO:* ${servicio}
+🔢 *CANTIDAD ESTIMADA:* ${cantidad}
+🎨 *DETALLES DEL PROYECTO:*
+${detalles}
+
+📌 *TÉRMINOS DE SERVICIO CONOCIDOS:*
+• Anticipo del 50% para inicio de confección.
+• Plazo de entrega estimado: 14 a 15 días hábiles.
+
+💬 _Hola, deseo que me brinden una cotización formal y opciones para este requerimiento._`;
+
+            const url = `https://wa.me/51965425458?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
+        function toggleChatPopup() {
+            const popup = document.getElementById('chatPopup');
+            popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function contactarAsesorDirecto(tipo) {
+            let mensaje = '';
+            if (tipo === 'asesor') {
+                mensaje =
+`╔══════════════════════════════╗
+  🙋‍♂️ *CONSULTA CON ASESOR DE VENTAS*
+╚══════════════════════════════╝
+🏢 *MULTISERVICIOS EL MAYORISTA*
+
+Hola, me encuentro navegando en su tienda virtual oficial y deseo realizar una consulta sobre disponibilidad de productos, tallas o compras inmediatas. 🛍️`;
+            } else {
+                mensaje =
+`╔══════════════════════════════╗
+  🏢 *ATENCIÓN SERVICIO MAYORISTA*
+╚══════════════════════════════╝
+🏢 *MULTISERVICIOS EL MAYORISTA*
+🌸 RUC: 10701759015
+
+Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/cajón, condiciones de distribución y despacho local para compras por volumen. 📦`;
+            }
+
+            const url = `https://wa.me/51965425458?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+            document.getElementById('chatPopup').style.display = 'none';
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function enviarPedidoWhatsApp() {
+            if (carrito.length === 0) return;
+
+            const nombre = document.getElementById('cliente-nombre').value.trim() || 'Cliente Registrado';
+            const comprobante = document.getElementById('tipo-comprobante').value;
+            const ruta = document.getElementById('ruta-entrega').value;
+            const totalSoles = carrito.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2);
+            const totalArticulos = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+
+            // Disparo de auto-impresión en la laptop
+            fetch('/api/imprimir_comanda', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cliente: nombre,
+                    comprobante: comprobante,
+                    ruta: ruta,
+                    total: totalSoles,
+                    items: carrito
+                })
+            }).catch(err => console.log('Error enviando a imprimir:', err));
+
+            // Envío formateado a WhatsApp
+            let detalle = carrito.map((item, idx) => {
+                return `🛍️ *ITEM ${idx + 1}:*${item.nombre.toUpperCase()}\n` +
+                       `   ▫️ *Cantidad:* ${item.cantidad} unidad(es)\n` +
+                       `   ▫️ *Talla:* [ ${item.talla} ]\n` +
+                       `   ▫️ *Color:* ${item.color}\n` +
+                       `   ▫️ *Subtotal:* S/ ${item.subtotal.toFixed(2)}\n` +
+                       `   ▫️ *Código Ref:* \`${item.codigo}\``;
+            }).join('\n━━━━━━━━━━━━━━━━━━━━━━\n');
+
+            const mensaje =
+`╔═══════════════════════╗
+   🛍️ *MULTISERVICIOS EL MAYORISTA*
+     ✨ *Pedido Oficial Web (Local)* ✨
+╚═══════════════════════╝
+🏢 *RUC:* 10701759015 | Boleta / Factura
+🌸 *Embajadores Oficiales Marca FLOMIL*
+🤝 *Alianza con Importadores y Fabricantes*
+
+👤 *DATOS DEL COMPRADOR*
+▪️ *Cliente:* ${nombre}
+▪️ *Comprobante Solicitado:* ${comprobante}
+▪️ *Ruta Local de Entrega:* ${ruta}
+
+📦 *DETALLE DE ARTÍCULOS*
+━━━━━━━━━━━━━━━━━━━━━━
+${detalle}
+━━━━━━━━━━━━━━━━━━━━━━
+
+💵 *LIQUIDACIÓN DE COMPRA*
+▪️ *Total de Artículos:* ${totalArticulos} unid.
+▪️ *TOTAL ESTIMADO:* *S/ ${totalSoles}*
+
+📌 *TÉRMINOS DE ENTREGA LOCAL:*
+• Despachos virtuales *estrictamente a nivel local*.
+• Mercadería asegurada previa cancelación.
+• Flete/transporte se abona contra entrega en destino.
+
+💬 _Por favor confírmeme disponibilidad y cuentas bancarias para el abono correspondiente._`;
+
+            const url = `https://wa.me/51965425458?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
+        window.addEventListener('click', function(e) {
+            const popup = document.getElementById('chatPopup');
+            const helpBtn = document.querySelector('.floating-help-btn');
+            if (popup && popup.style.display === 'block' && !popup.contains(e.target) && !helpBtn.contains(e.target)) {
+                popup.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+
+ 
