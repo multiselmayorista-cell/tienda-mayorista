@@ -16,28 +16,17 @@ def limpiar_codigo_para_foto(val):
     s = re.sub(r"-+", "-", s)
     return s.strip("-")
 
-def normalizar_categoria(cat_orig, desc):
-    cat = str(cat_orig).strip()
-    if not cat or cat.lower() in ['nan', 'none', '']:
-        desc_l = str(desc).lower()
-        if 'flomil' in desc_l:
-            return 'FLOMIL'
-        elif 'bota' in desc_l or 'zapato' in desc_l:
-            return 'Calzado'
-        elif 'pantalon' in desc_l or 'pantalón' in desc_l:
-            return 'Pantalones'
-        return 'Otros'
-   
-    # Si ya tiene categoría escrita, respetamos su texto original capitalizado
-    return cat.strip().capitalize()
-
 def obtener_inventario():
     df = None
     if os.path.exists(ARCHIVO_LOCAL):
         try:
-            df = pd.read_csv(ARCHIVO_LOCAL)
+            # utf-8-sig remueve automáticamente los caracteres extraños Ã¯Â»Â¿
+            df = pd.read_csv(ARCHIVO_LOCAL, encoding='utf-8-sig')
         except Exception:
-            pass
+            try:
+                df = pd.read_csv(ARCHIVO_LOCAL, encoding='latin1')
+            except Exception:
+                pass
            
     if df is None and os.path.exists("inventario.xlsx"):
         try:
@@ -51,8 +40,10 @@ def obtener_inventario():
         except Exception:
             return []
 
-    # Normalizar nombres de columnas
-    df.columns = df.columns.str.strip().str.lower()
+    # Limpiar nombres de columnas
+    df.columns = df.columns.astype(str).str.strip().str.lower()
+    # Eliminar cualquier caracter raro al inicio de los nombres de columna
+    df.columns = [re.sub(r'^[^a-z0-9]+', '', c) for c in df.columns]
 
     # Mapeo de columnas
     equivalencias = {
@@ -74,16 +65,17 @@ def obtener_inventario():
             df[col] = df[col].astype(str).str.replace(',', '.')
             df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
 
-    # ID limpio para buscar fotos
+    # Identificador limpio para buscar imágenes
     if 'codigo' in df.columns:
         df['foto_id'] = df['codigo'].apply(limpiar_codigo_para_foto)
     else:
         df['foto_id'] = ''
 
-    # Categorías fieles al inventario
-    cat_col = df['categoria'] if 'categoria' in df.columns else ''
-    desc_col = df['descripcion'] if 'descripcion' in df.columns else ''
-    df['categoria_final'] = [normalizar_categoria(c, d) for c, d in zip(cat_col, desc_col)]
+    # Normalizar texto de categorías tal como vienen en el archivo
+    if 'categoria' in df.columns:
+        df['categoria_final'] = df['categoria'].astype(str).str.strip().str.title()
+    else:
+        df['categoria_final'] = 'General'
 
     df = df.fillna('')
     return df
@@ -95,7 +87,7 @@ def catalogo():
         productos = []
         categorias = []
     else:
-        categorias = sorted([c for c in df['categoria_final'].unique() if c])
+        categorias = sorted([c for c in df['categoria_final'].unique() if c and c.lower() not in ['nan', 'none', '']])
         productos = df.to_dict(orient='records')
 
     return render_template('index.html', productos=productos, categorias=categorias)
