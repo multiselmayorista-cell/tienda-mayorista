@@ -294,7 +294,7 @@
             overflow: hidden;
             border-radius: 12px;
             margin-bottom: 12px;
-            background: #f8fafc;
+            background: #ffffff;
             border: 1px solid #e2e8f0;
         }
         .product-img {
@@ -698,13 +698,32 @@
                 {% else %}{{ p.categoria }}{% endif %}
             </span>
 
-            <!-- FOTO DEL PRODUCTO VISIBLE -->
+            <!-- FOTO DEL PRODUCTO INTELIGENTE (Prueba guion, comilla, jpg, JPG y png) -->
             <div class="product-img-box">
-                <img src="/static/img/{{ p.codigo }}.jpg"
+                <img src="/static/img/{{ p.foto_id }}.jpg"
                      alt="{{ p.descripcion }}"
                      class="product-img"
                      loading="lazy"
-                     onerror="if(!this.dataset.t1){this.dataset.t1='1';this.src='/static/img/{{ p.codigo }}.JPG';}else if(!this.dataset.t2){this.dataset.t2='1';this.src='/static/img/{{ p.codigo }}.png';}else{this.src='https://placehold.co/400x300/f8fafc/94a3b8?text=Sin+Foto';}">
+                     onerror="
+                        if (!this.dataset.step) {
+                            this.dataset.step = '1';
+                            this.src = '/static/img/{{ p.foto_id }}.JPG';
+                        } else if (this.dataset.step === '1') {
+                            this.dataset.step = '2';
+                            this.src = '/static/img/{{ p.foto_id }}.png';
+                        } else if (this.dataset.step === '2') {
+                            this.dataset.step = '3';
+                            this.src = '/static/img/{{ p.codigo }}.jpg';
+                        } else if (this.dataset.step === '3') {
+                            this.dataset.step = '4';
+                            this.src = '/static/img/{{ p.codigo }}.JPG';
+                        } else if (this.dataset.step === '4') {
+                            this.dataset.step = '5';
+                            this.src = '/static/img/{{ p.codigo }}.png';
+                        } else {
+                            this.src = 'https://placehold.co/400x300/f8fafc/94a3b8?text=Sin+Foto';
+                        }
+                     ">
             </div>
 
             <h3>{{ p.descripcion if p.descripcion else p.categoria }}</h3>
@@ -876,7 +895,7 @@
             </div>
 
             <div class="local-notice">
-                ⚠️ <strong>Aviso Importante de Despacho:</strong> Nuestras ventas virtuales son <strong>estrictamente de cobertura local</strong>. No realizamos envíos nacionales por los altos costos de transporte.
+                ⚠️️ <strong>Aviso Importante de Despacho:</strong> Nuestras ventas virtuales son <strong>estrictamente de cobertura local</strong>. No realizamos envíos nacionales por los altos costos de transporte.
             </div>
 
             <div id="carrito-lista" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
@@ -1198,7 +1217,7 @@ ${detalles}
 ╚══════════════════════════════╝
 🏢 *MULTISERVICIOS EL MAYORISTA*
 
-Hola, me encuentro navegando en su tienda virtual oficial y deseo realizar una consulta sobre disponibilidad de productos, tallas o compras inmediatas. 🛍️️`;
+Hola, me encuentro navegando en su tienda virtual oficial y deseo realizar una consulta sobre disponibilidad de productos, tallas o compras inmediatas. 🛍`;
             } else {
                 mensaje =
 `╔══════════════════════════════╗
