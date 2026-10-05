@@ -322,8 +322,10 @@
             color: white;
             box-shadow: 0 2px 8px rgba(244, 63, 94, 0.35);
         }
-        .badge-ropa { background: #fdf2f8; color: #db2777; border: 1px solid #fbcfe8; }
         .badge-calzado { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        .badge-ropa { background: #fdf2f8; color: #db2777; border: 1px solid #fbcfe8; }
+        .badge-pantalones { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .badge-deportes { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
         .badge-libreria { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
         .badge-default { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
 
@@ -658,7 +660,7 @@
         </button>
     </div>
 
-    <!-- Barra de Categorías Deslizable -->
+    <!-- Barra de Categorías Agrupadas Inteligente -->
     <div class="cat-nav-wrapper">
         <button class="scroll-btn" onclick="desplazarCategorias(-240)" title="Ver categorías anteriores">◀</button>
         <div class="categories-bar" id="contenedor-categorias">
@@ -667,13 +669,7 @@
             {% set c_lower = cat|string|lower %}
             <button class="cat-btn {% if 'flomil' in c_lower %}cat-btn-flomil{% endif %}"
                     onclick="filtrarCategoria('{{ cat }}', this)">
-                {% if 'flomil' in c_lower %}🌸 FLOMIL ✨
-                {% elif 'ropa' in c_lower or 'media' in c_lower %}👗 {{ cat|capitalize }}
-                {% elif 'calzado' in c_lower or 'bota' in c_lower or 'zapato' in c_lower %}👞 {{ cat|capitalize }}
-                {% elif 'librer' in c_lower %}📚 {{ cat|capitalize }}
-                {% elif 'mochila' in c_lower or 'cartera' in c_lower or 'billetera' in c_lower %}🎒 {{ cat|capitalize }}
-                {% elif 'espejo' in c_lower or 'maquillaje' in c_lower %}💄 {{ cat|capitalize }}
-                {% else %}🏷️ {{ cat|capitalize }}{% endif %}
+                {{ cat }}
             </button>
             {% endfor %}
         </div>
@@ -683,19 +679,20 @@
     <!-- Cuadrícula de Productos -->
     <div class="grid" id="contenedor-productos">
         {% for p in productos %}
-        {% set cat_lower = p.categoria|string|lower %}
+        {% set cat_agrupada_lower = p.categoria_agrupada|string|lower %}
         <div class="card producto-item"
-             data-categoria="{{ cat_lower }}"
-             data-texto="{{ p.codigo|string|lower }} {{ cat_lower }} {{ p.descripcion|string|lower }}">
+             data-categoria="{{ cat_agrupada_lower }}"
+             data-texto="{{ p.codigo|string|lower }} {{ cat_agrupada_lower }} {{ p.categoria|string|lower }} {{ p.descripcion|string|lower }}">
           
             <span class="badge-cat
-                {% if 'flomil' in cat_lower %}badge-flomil
-                {% elif 'ropa' in cat_lower or 'media' in cat_lower %}badge-ropa
-                {% elif 'calzado' in cat_lower or 'bota' in cat_lower or 'zapato' in cat_lower %}badge-calzado
-                {% elif 'librer' in cat_lower %}badge-libreria
+                {% if 'flomil' in cat_agrupada_lower %}badge-flomil
+                {% elif 'calzado' in cat_agrupada_lower %}badge-calzado
+                {% elif 'pantalones' in cat_agrupada_lower %}badge-pantalones
+                {% elif 'dama' in cat_agrupada_lower %}badge-ropa
+                {% elif 'deporte' in cat_agrupada_lower %}badge-deportes
+                {% elif 'librer' in cat_agrupada_lower %}badge-libreria
                 {% else %}badge-default{% endif %}">
-                {% if 'flomil' in cat_lower %}🌸 FLOMIL
-                {% else %}{{ p.categoria }}{% endif %}
+                {{ p.categoria_agrupada }}
             </span>
 
             <!-- FOTO DEL PRODUCTO INTELIGENTE (Prueba guion, comilla, jpg, JPG y png) -->
@@ -726,7 +723,7 @@
                      ">
             </div>
 
-            <h3>{{ p.descripcion if p.descripcion else p.categoria }}</h3>
+            <h3>{{ p.descripcion if p.descripcion else p.categoria_agrupada }}</h3>
             {% if p.codigo %}
             <p class="detail">Cód Ref: <strong>#{{ p.codigo }}</strong></p>
             {% endif %}
@@ -751,7 +748,7 @@
                 </div>
 
                 <button class="btn-select"
-                    onclick="abrirModalProducto('{{ p.descripcion if p.descripcion else p.categoria }}', {{ p.precio_unit }}, '{{ p.codigo }}', '{{ cat_lower }}', {{ p.precio_cuarto }}, {{ p.precio_docena }})">
+                    onclick="abrirModalProducto('{{ p.descripcion if p.descripcion else p.categoria_agrupada }}', {{ p.precio_unit }}, '{{ p.codigo }}', '{{ cat_agrupada_lower }}', {{ p.precio_cuarto }}, {{ p.precio_docena }})">
                     🛍️ Elegir Talla y Pedir
                 </button>
             </div>
@@ -895,7 +892,7 @@
             </div>
 
             <div class="local-notice">
-                ⚠️️ <strong>Aviso Importante de Despacho:</strong> Nuestras ventas virtuales son <strong>estrictamente de cobertura local</strong>. No realizamos envíos nacionales por los altos costos de transporte.
+                ⚠️ <strong>Aviso Importante de Despacho:</strong> Nuestras ventas virtuales son <strong>estrictamente de cobertura local</strong>. No realizamos envíos nacionales por los altos costos de transporte.
             </div>
 
             <div id="carrito-lista" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
@@ -1042,7 +1039,7 @@
                 return ['38', '39', '40', '41', '42'];
             }
 
-            if (texto.includes('ropa') || texto.includes('polera') || texto.includes('short') || texto.includes('bermuda') || texto.includes('faja')) {
+            if (texto.includes('ropa') || texto.includes('polera') || texto.includes('short') || texto.includes('bermuda') || texto.includes('faja') || texto.includes('pantalon')) {
                 return ['S', 'M', 'L', 'XL', 'Estándar'];
             }
 
@@ -1213,7 +1210,7 @@ ${detalles}
             if (tipo === 'asesor') {
                 mensaje =
 `╔══════════════════════════════╗
-  🙋‍♂️ *CONSULTA CON ASESOR DE VENTAS*
+  🙋‍♂️️ *CONSULTA CON ASESOR DE VENTAS*
 ╚══════════════════════════════╝
 🏢 *MULTISERVICIOS EL MAYORISTA*
 
@@ -1262,7 +1259,7 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
             let detalle = carrito.map((item, idx) => {
                 return `🛍️ *ITEM ${idx + 1}:*${item.nombre.toUpperCase()}\n` +
                        `   ▫️ *Cantidad:* ${item.cantidad} unidad(es)\n` +
-                       `   ▫️️ *Talla:* [ ${item.talla} ]\n` +
+                       `   ▫️ *Talla:* [ ${item.talla} ]\n` +
                        `   ▫️ *Color:* ${item.color}\n` +
                        `   ▫️ *Subtotal:* S/ ${item.subtotal.toFixed(2)}\n` +
                        `   ▫️ *Código Ref:* \`${item.codigo}\``;
@@ -1278,7 +1275,7 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
 🤝 *Alianza con Importadores y Fabricantes*
 
 👤 *DATOS DEL COMPRADOR*
-▪️ *Cliente:* ${nombre}
+▪️️ *Cliente:* ${nombre}
 ▪️ *Comprobante Solicitado:* ${comprobante}
 ▪️ *Ruta Local de Entrega:* ${ruta}
 
