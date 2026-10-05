@@ -65,7 +65,7 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
         .brand-subtitle { font-size: 0.95rem; color: #94a3b8; margin-top: 4px; font-weight: 600; }
-       
+      
         .info-pills-container {
             display: flex;
             justify-content: center;
@@ -284,6 +284,29 @@
             border-color: #cbd5e1;
         }
 
+        /* Contenedor de Imagen de Producto */
+        .product-img-box {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+        }
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.25s ease;
+        }
+        .card:hover .product-img {
+            transform: scale(1.05);
+        }
+
         .badge-cat {
             align-self: flex-start;
             font-size: 0.75rem;
@@ -304,7 +327,7 @@
         .badge-libreria { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
         .badge-default { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
 
-        .card h3 { font-size: 1.1rem; color: #0f172a; margin-bottom: 5px; font-weight: 800; line-height: 1.35; }
+        .card h3 { font-size: 1.05rem; color: #0f172a; margin-bottom: 5px; font-weight: 800; line-height: 1.35; }
         .card .detail { font-size: 0.84rem; color: #64748b; margin-bottom: 14px; flex-grow: 1; }
 
         .price-box {
@@ -323,7 +346,7 @@
             gap: 6px;
         }
         .unit-label { font-size: 0.82rem; color: #64748b; font-weight: 600; }
-       
+      
         .sub-prices {
             font-size: 0.82rem;
             color: #334155;
@@ -418,7 +441,7 @@
         }
         .chat-menu-popup h4 { font-size: 1rem; color: #0f172a; margin-bottom: 4px; font-weight: 800; }
         .chat-menu-popup p { font-size: 0.8rem; color: #64748b; margin-bottom: 12px; }
-       
+      
         .chat-option-btn {
             display: flex;
             align-items: center;
@@ -463,7 +486,7 @@
             border-top: 2px solid #38bdf8;
         }
         .cart-info strong { color: #38bdf8; font-size: 1.35rem; font-weight: 900; }
-       
+      
         .btn-view-cart {
             background: linear-gradient(135deg, #22c55e, #16a34a);
             color: white;
@@ -505,7 +528,7 @@
         }
         .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
         .modal-close { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #64748b; line-height: 1; }
-       
+      
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: #334155; }
         .form-control { width: 100%; padding: 11px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 0.95rem; font-weight: 500; }
@@ -550,7 +573,7 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
         }
-       
+      
         .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1.5px solid #f1f5f9; }
         .cart-item-meta { font-size: 0.84rem; color: #64748b; margin-top: 3px; font-weight: 500; }
 
@@ -599,7 +622,7 @@
     <header>
         <div class="brand-name">MULTISERVICIOS EL MAYORISTA</div>
         <p class="brand-subtitle">Venta por Mayor y Menor | Almacén Central</p>
-       
+      
         <div class="info-pills-container">
             <div class="pill pill-flomil">
                 🌸 Embajadores Oficiales de la Marca FLOMIL (Carteras, Mochilas y Hogar)
@@ -664,7 +687,7 @@
         <div class="card producto-item"
              data-categoria="{{ cat_lower }}"
              data-texto="{{ p.codigo|string|lower }} {{ cat_lower }} {{ p.descripcion|string|lower }}">
-           
+          
             <span class="badge-cat
                 {% if 'flomil' in cat_lower %}badge-flomil
                 {% elif 'ropa' in cat_lower or 'media' in cat_lower %}badge-ropa
@@ -675,6 +698,15 @@
                 {% else %}{{ p.categoria }}{% endif %}
             </span>
 
+            <!-- FOTO DEL PRODUCTO -->
+            <div class="product-img-box">
+                <img src="/static/img/{{ p.codigo }}.jpg"
+                     alt="{{ p.descripcion }}"
+                     class="product-img"
+                     loading="lazy"
+                     onerror="this.onerror=null; this.src='/static/img/{{ p.codigo }}.png'; this.onerror=function(){this.parentElement.style.display='none';};">
+            </div>
+
             <h3>{{ p.descripcion if p.descripcion else p.categoria }}</h3>
             {% if p.codigo %}
             <p class="detail">Cód Ref: <strong>#{{ p.codigo }}</strong></p>
@@ -682,7 +714,7 @@
 
             <div class="price-box">
                 <div class="main-price">S/ {{ "%.2f"|format(p.precio_unit) }} <span class="unit-label">x Unidad</span></div>
-               
+              
                 <div class="sub-prices">
                     {% if p.precio_cuarto > 0 %}
                     <div>📦 1/4 Docena: <strong>S/ {{ "%.2f"|format(p.precio_cuarto) }}</strong></div>
@@ -718,7 +750,7 @@
     <div class="chat-menu-popup" id="chatPopup">
         <h4>Atención Personalizada</h4>
         <p>Elige con quién deseas comunicarte directamente:</p>
-       
+      
         <button class="chat-option-btn" onclick="contactarAsesorDirecto('asesor')">
             <span style="font-size:1.2rem;">🙋‍♂️</span>
             <div>
@@ -823,7 +855,7 @@
             </div>
 
             <div class="alert-box">
-                ℹ️ <strong>Condiciones de Confección:</strong> Trabajo bajo pedido con <strong>50% de anticipo</strong> y plazo de producción estimado de <strong>14 a 15 días hábiles</strong>.
+                ℹ️️ <strong>Condiciones de Confección:</strong> Trabajo bajo pedido con <strong>50% de anticipo</strong> y plazo de producción estimado de <strong>14 a 15 días hábiles</strong>.
             </div>
 
             <div class="modal-actions">
@@ -964,7 +996,7 @@
         /* DETERMINACIÓN EXACTA DE TALLAS COMERCIALES */
         function obtenerTallasParaProducto(nombre, categoria, precio) {
             const texto = (nombre + ' ' + categoria).toLowerCase();
-           
+          
             // Si el nombre ya trae una talla explícita en paréntesis ej: (38) o (M)
             const tallaParentesis = nombre.match(/\((.*?)\)/);
             if (tallaParentesis) {
@@ -1008,7 +1040,7 @@
         function abrirModalProducto(nombre, precio, codigo, categoria, pCuarto, pDocena) {
             itemSeleccionado = { nombre, precio, codigo, categoria, pCuarto, pDocena };
             cantidadModal = 1;
-           
+          
             document.getElementById('modal-prod-nombre').textContent = nombre;
             document.getElementById('modal-prod-precio').textContent = `S/ ${precio.toFixed(2)} c/u`;
             document.getElementById('modal-color').value = extraerColorInteligente(nombre);
@@ -1017,8 +1049,7 @@
 
             const contenedorTallas = document.getElementById('contenedor-tallas');
             contenedorTallas.innerHTML = '';
-           
-            // Pasa el precio para saber si es bota normal (36 a 42) o especial (43 y 44)
+          
             const tallas = obtenerTallasParaProducto(nombre, categoria, precio);
             tallaSeleccionada = tallas[0];
 
@@ -1204,7 +1235,7 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
             const totalSoles = carrito.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2);
             const totalArticulos = carrito.reduce((sum, item) => sum + item.cantidad, 0);
 
-            // Disparo de auto-impresión en la laptop
+            // Disparo de impresión
             fetch('/api/imprimir_comanda', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
