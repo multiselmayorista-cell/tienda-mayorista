@@ -284,7 +284,7 @@
             border-color: #cbd5e1;
         }
 
-        /* Contenedor de Imagen de Producto */
+        /* Caja de Imagen de Producto */
         .product-img-box {
             width: 100%;
             height: 200px;
@@ -295,7 +295,7 @@
             border-radius: 12px;
             margin-bottom: 12px;
             background: #f8fafc;
-            border: 1px solid #f1f5f9;
+            border: 1px solid #e2e8f0;
         }
         .product-img {
             width: 100%;
@@ -698,13 +698,13 @@
                 {% else %}{{ p.categoria }}{% endif %}
             </span>
 
-            <!-- FOTO DEL PRODUCTO -->
+            <!-- FOTO DEL PRODUCTO VISIBLE -->
             <div class="product-img-box">
                 <img src="/static/img/{{ p.codigo }}.jpg"
                      alt="{{ p.descripcion }}"
                      class="product-img"
                      loading="lazy"
-                     onerror="this.onerror=null; this.src='/static/img/{{ p.codigo }}.png'; this.onerror=function(){this.parentElement.style.display='none';};">
+                     onerror="if(!this.dataset.t1){this.dataset.t1='1';this.src='/static/img/{{ p.codigo }}.JPG';}else if(!this.dataset.t2){this.dataset.t2='1';this.src='/static/img/{{ p.codigo }}.png';}else{this.src='https://placehold.co/400x300/f8fafc/94a3b8?text=Sin+Foto';}">
             </div>
 
             <h3>{{ p.descripcion if p.descripcion else p.categoria }}</h3>
@@ -855,7 +855,7 @@
             </div>
 
             <div class="alert-box">
-                ℹ️️ <strong>Condiciones de Confección:</strong> Trabajo bajo pedido con <strong>50% de anticipo</strong> y plazo de producción estimado de <strong>14 a 15 días hábiles</strong>.
+                ℹ️ <strong>Condiciones de Confección:</strong> Trabajo bajo pedido con <strong>50% de anticipo</strong> y plazo de producción estimado de <strong>14 a 15 días hábiles</strong>.
             </div>
 
             <div class="modal-actions">
@@ -997,39 +997,32 @@
         function obtenerTallasParaProducto(nombre, categoria, precio) {
             const texto = (nombre + ' ' + categoria).toLowerCase();
           
-            // Si el nombre ya trae una talla explícita en paréntesis ej: (38) o (M)
             const tallaParentesis = nombre.match(/\((.*?)\)/);
             if (tallaParentesis) {
                 return [tallaParentesis[1].toUpperCase()];
             }
 
-            // 1. Botas Tallas Especiales 43 y 44 (código y precio mayor a S/ 45)
             if (texto.includes('bota') && (texto.includes('43') || texto.includes('44') || precio >= 48)) {
                 return ['43', '44'];
             }
 
-            // 2. Botas Estándar de Varón o Dama (Precio normal S/ 45.00: estrictamente de 36 a 42)
             if (texto.includes('bota')) {
                 return ['36', '37', '38', '39', '40', '41', '42'];
             }
 
-            // 3. Calzado / Zapatos de Dama
             const esDama = /\b(d|d\.|dama|mujer)\b/i.test(nombre) || texto.includes('tobillera');
             if (esDama && (texto.includes('zapato') || texto.includes('sandalia') || texto.includes('calzado') || texto.includes('media'))) {
                 return ['35', '36', '37', '38', '39'];
             }
 
-            // 4. Chuteras y deportivo
             if (texto.includes('chutera') || texto.includes('zapatilla') || texto.includes('futbol')) {
                 return ['36', '37', '38', '39', '40', '41', '42', '43'];
             }
 
-            // 5. Calzado general varón estándar
             if (texto.includes('calzado') || texto.includes('zapato') || texto.includes('venus')) {
                 return ['38', '39', '40', '41', '42'];
             }
 
-            // 6. Ropa / Prendas textiles
             if (texto.includes('ropa') || texto.includes('polera') || texto.includes('short') || texto.includes('bermuda') || texto.includes('faja')) {
                 return ['S', 'M', 'L', 'XL', 'Estándar'];
             }
@@ -1205,7 +1198,7 @@ ${detalles}
 ╚══════════════════════════════╝
 🏢 *MULTISERVICIOS EL MAYORISTA*
 
-Hola, me encuentro navegando en su tienda virtual oficial y deseo realizar una consulta sobre disponibilidad de productos, tallas o compras inmediatas. 🛍️`;
+Hola, me encuentro navegando en su tienda virtual oficial y deseo realizar una consulta sobre disponibilidad de productos, tallas o compras inmediatas. 🛍️️`;
             } else {
                 mensaje =
 `╔══════════════════════════════╗
@@ -1235,7 +1228,6 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
             const totalSoles = carrito.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2);
             const totalArticulos = carrito.reduce((sum, item) => sum + item.cantidad, 0);
 
-            // Disparo de impresión
             fetch('/api/imprimir_comanda', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1248,11 +1240,10 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
                 })
             }).catch(err => console.log('Error enviando a imprimir:', err));
 
-            // Envío formateado a WhatsApp
             let detalle = carrito.map((item, idx) => {
                 return `🛍️ *ITEM ${idx + 1}:*${item.nombre.toUpperCase()}\n` +
                        `   ▫️ *Cantidad:* ${item.cantidad} unidad(es)\n` +
-                       `   ▫️ *Talla:* [ ${item.talla} ]\n` +
+                       `   ▫️️ *Talla:* [ ${item.talla} ]\n` +
                        `   ▫️ *Color:* ${item.color}\n` +
                        `   ▫️ *Subtotal:* S/ ${item.subtotal.toFixed(2)}\n` +
                        `   ▫️ *Código Ref:* \`${item.codigo}\``;
