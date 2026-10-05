@@ -16,43 +16,20 @@ def limpiar_codigo_para_foto(val):
     s = re.sub(r"-+", "-", s)
     return s.strip("-")
 
-def clasificar_categoria_inteligente(descripcion, categoria_original):
-    texto = f"{descripcion} {categoria_original}".lower()
+def normalizar_categoria(cat_orig, desc):
+    cat = str(cat_orig).strip()
+    if not cat or cat.lower() in ['nan', 'none', '']:
+        desc_l = str(desc).lower()
+        if 'flomil' in desc_l:
+            return 'FLOMIL'
+        elif 'bota' in desc_l or 'zapato' in desc_l:
+            return 'Calzado'
+        elif 'pantalon' in desc_l or 'pantalón' in desc_l:
+            return 'Pantalones'
+        return 'Otros'
    
-    # Flomil y Carteras/Mochilas
-    if any(k in texto for k in ['flomil', 'cartera', 'mochila', 'morral', 'billetera', 'neceser', 'monedero']):
-        return '🌸 FLOMIL & Accesorios'
-       
-    # Calzado y Botas
-    if any(k in texto for k in ['bota', 'calzado', 'zapato', 'zapatilla', 'sandalia', 'chutera', 'botin', 'venus']):
-        return '👞 Calzado y Botas'
-
-    # Ropa Hombre / Pantalones
-    if any(k in texto for k in ['pantalon h', 'pantalón h', 'pantalon hombre', 'pantalón hombre', 'pantalon varon', 'pantalón varón', 'pantalon', 'pantalón', 'bermuda', 'boxer', 'camisa']):
-        return '👖 Pantalones y Ropa Hombre'
-
-    # Ropa Dama
-    if any(k in texto for k in ['dama', 'mujer', 'blusa', 'vestido', 'falda', 'faja', 'top', 'leggin', 'brasier']):
-        return '👗 Ropa Dama'
-       
-    # Deportes y Confección
-    if any(k in texto for k in ['deporte', 'camiseta', 'futbol', 'voley', 'short deportivo', 'jugador', 'arquero', 'conjunto']):
-        return '⚽ Deportes y Camisetas'
-
-    # Librería y Útiles
-    if any(k in texto for k in ['librer', 'cuaderno', 'lapicero', 'hoja', 'util', 'papel']):
-        return '📚 Librería y Útiles'
-
-    # Abarrotes y Hogar
-    if any(k in texto for k in ['abarrote', 'limpieza', 'hogar', 'downy', 'shampoo', 'jabon']):
-        return '🏠 Abarrotes y Hogar'
-
-    # Si trae una categoría previa limpia, usarla
-    cat_limpia = str(categoria_original).strip().capitalize()
-    if cat_limpia and cat_limpia.lower() not in ['nan', 'none', '']:
-        return cat_limpia
-
-    return '🏷️ Otros Productos'
+    # Si ya tiene categoría escrita, respetamos su texto original capitalizado
+    return cat.strip().capitalize()
 
 def obtener_inventario():
     df = None
@@ -97,20 +74,16 @@ def obtener_inventario():
             df[col] = df[col].astype(str).str.replace(',', '.')
             df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
 
-    # Creación de campos clave para búsqueda y fotos
+    # ID limpio para buscar fotos
     if 'codigo' in df.columns:
         df['foto_id'] = df['codigo'].apply(limpiar_codigo_para_foto)
     else:
         df['foto_id'] = ''
 
-    # Agrupación y clasificación inteligente
-    desc_col = df['descripcion'] if 'descripcion' in df.columns else ''
+    # Categorías fieles al inventario
     cat_col = df['categoria'] if 'categoria' in df.columns else ''
-   
-    df['categoria_agrupada'] = [
-        clasificar_categoria_inteligente(d, c)
-        for d, c in zip(desc_col, cat_col)
-    ]
+    desc_col = df['descripcion'] if 'descripcion' in df.columns else ''
+    df['categoria_final'] = [normalizar_categoria(c, d) for c, d in zip(cat_col, desc_col)]
 
     df = df.fillna('')
     return df
@@ -122,7 +95,7 @@ def catalogo():
         productos = []
         categorias = []
     else:
-        categorias = sorted([c for c in df['categoria_agrupada'].unique() if c])
+        categorias = sorted([c for c in df['categoria_final'].unique() if c])
         productos = df.to_dict(orient='records')
 
     return render_template('index.html', productos=productos, categorias=categorias)

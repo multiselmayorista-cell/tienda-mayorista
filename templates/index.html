@@ -322,10 +322,8 @@
             color: white;
             box-shadow: 0 2px 8px rgba(244, 63, 94, 0.35);
         }
-        .badge-calzado { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
         .badge-ropa { background: #fdf2f8; color: #db2777; border: 1px solid #fbcfe8; }
-        .badge-pantalones { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-        .badge-deportes { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
+        .badge-calzado { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
         .badge-libreria { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
         .badge-default { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
 
@@ -660,16 +658,27 @@
         </button>
     </div>
 
-    <!-- Barra de Categorías Agrupadas Inteligente -->
+    <!-- Barra de Categorías Deslizable -->
     <div class="cat-nav-wrapper">
         <button class="scroll-btn" onclick="desplazarCategorias(-240)" title="Ver categorías anteriores">◀</button>
         <div class="categories-bar" id="contenedor-categorias">
-            <button class="cat-btn active" onclick="filtrarCategoria('todas', this)">✨ Todos los productos</button>
+            <button class="cat-btn active" data-categoria="todas" onclick="filtrarCategoria('todas', this)">✨ Todos los productos</button>
             {% for cat in categorias %}
-            {% set c_lower = cat|string|lower %}
+            {% set c_lower = cat|string|lower|trim %}
             <button class="cat-btn {% if 'flomil' in c_lower %}cat-btn-flomil{% endif %}"
-                    onclick="filtrarCategoria('{{ cat }}', this)">
-                {{ cat }}
+                    data-categoria="{{ c_lower }}"
+                    onclick="filtrarCategoria('{{ c_lower }}', this)">
+                {% if 'flomil' in c_lower %}🌸 FLOMIL ✨
+                {% elif 'cartera importada' in c_lower %}👜 Cartera Importada
+                {% elif 'cartera' in c_lower or 'mochila' in c_lower or 'morral' in c_lower or 'billetera' in c_lower %}🎒 {{ cat|capitalize }}
+                {% elif 'pantalon' in c_lower or 'pantalón' in c_lower %}👖 {{ cat|capitalize }}
+                {% elif 'ropa' in c_lower or 'media' in c_lower or 'dama' in c_lower %}👗 {{ cat|capitalize }}
+                {% elif 'calzado' in c_lower or 'bota' in c_lower or 'zapato' in c_lower %}👞 {{ cat|capitalize }}
+                {% elif 'deporte' in c_lower or 'camiseta' in c_lower %}⚽ {{ cat|capitalize }}
+                {% elif 'librer' in c_lower %}📚 {{ cat|capitalize }}
+                {% elif 'abarrote' in c_lower or 'hogar' in c_lower %}🏠 {{ cat|capitalize }}
+                {% elif 'espejo' in c_lower or 'maquillaje' in c_lower %}💄 {{ cat|capitalize }}
+                {% else %}🏷️ {{ cat|capitalize }}{% endif %}
             </button>
             {% endfor %}
         </div>
@@ -679,23 +688,25 @@
     <!-- Cuadrícula de Productos -->
     <div class="grid" id="contenedor-productos">
         {% for p in productos %}
-        {% set cat_agrupada_lower = p.categoria_agrupada|string|lower %}
+        {% set cat_actual = p.categoria_agrupada if p.categoria_agrupada else (p.categoria_final if p.categoria_final else p.categoria) %}
+        {% set cat_lower = cat_actual|string|lower|trim %}
+        {% set cat_orig_lower = p.categoria|string|lower|trim %}
         <div class="card producto-item"
-             data-categoria="{{ cat_agrupada_lower }}"
-             data-texto="{{ p.codigo|string|lower }} {{ cat_agrupada_lower }} {{ p.categoria|string|lower }} {{ p.descripcion|string|lower }}">
+             data-categoria="{{ cat_lower }}"
+             data-categoria-orig="{{ cat_orig_lower }}"
+             data-texto="{{ p.codigo|string|lower }} {{ cat_lower }} {{ cat_orig_lower }} {{ p.descripcion|string|lower }}">
           
             <span class="badge-cat
-                {% if 'flomil' in cat_agrupada_lower %}badge-flomil
-                {% elif 'calzado' in cat_agrupada_lower %}badge-calzado
-                {% elif 'pantalones' in cat_agrupada_lower %}badge-pantalones
-                {% elif 'dama' in cat_agrupada_lower %}badge-ropa
-                {% elif 'deporte' in cat_agrupada_lower %}badge-deportes
-                {% elif 'librer' in cat_agrupada_lower %}badge-libreria
+                {% if 'flomil' in cat_lower %}badge-flomil
+                {% elif 'ropa' in cat_lower or 'media' in cat_lower or 'dama' in cat_lower %}badge-ropa
+                {% elif 'calzado' in cat_lower or 'bota' in cat_lower or 'zapato' in cat_lower %}badge-calzado
+                {% elif 'librer' in cat_lower %}badge-libreria
                 {% else %}badge-default{% endif %}">
-                {{ p.categoria_agrupada }}
+                {% if 'flomil' in cat_lower %}🌸 FLOMIL
+                {% else %}{{ cat_actual }}{% endif %}
             </span>
 
-            <!-- FOTO DEL PRODUCTO INTELIGENTE (Prueba guion, comilla, jpg, JPG y png) -->
+            <!-- FOTO DEL PRODUCTO INTELIGENTE -->
             <div class="product-img-box">
                 <img src="/static/img/{{ p.foto_id }}.jpg"
                      alt="{{ p.descripcion }}"
@@ -723,7 +734,7 @@
                      ">
             </div>
 
-            <h3>{{ p.descripcion if p.descripcion else p.categoria_agrupada }}</h3>
+            <h3>{{ p.descripcion if p.descripcion else cat_actual }}</h3>
             {% if p.codigo %}
             <p class="detail">Cód Ref: <strong>#{{ p.codigo }}</strong></p>
             {% endif %}
@@ -748,7 +759,7 @@
                 </div>
 
                 <button class="btn-select"
-                    onclick="abrirModalProducto('{{ p.descripcion if p.descripcion else p.categoria_agrupada }}', {{ p.precio_unit }}, '{{ p.codigo }}', '{{ cat_agrupada_lower }}', {{ p.precio_cuarto }}, {{ p.precio_docena }})">
+                    onclick="abrirModalProducto('{{ p.descripcion if p.descripcion else cat_actual }}', {{ p.precio_unit }}, '{{ p.codigo }}', '{{ cat_lower }}', {{ p.precio_cuarto }}, {{ p.precio_docena }})">
                     🛍️ Elegir Talla y Pedir
                 </button>
             </div>
@@ -768,7 +779,7 @@
         <p>Elige con quién deseas comunicarte directamente:</p>
       
         <button class="chat-option-btn" onclick="contactarAsesorDirecto('asesor')">
-            <span style="font-size:1.2rem;">🙋‍♂️</span>
+            <span style="font-size:1.2rem;">🙋‍♂️️</span>
             <div>
                 <strong>Asesor de Ventas</strong>
                 <div style="font-size:0.75rem; color:#64748b; font-weight:normal;">Consultas de productos y stock</div>
@@ -964,10 +975,22 @@
             const productos = document.querySelectorAll('.producto-item');
 
             productos.forEach(card => {
-                const prodCat = card.getAttribute('data-categoria');
-                const prodTexto = card.getAttribute('data-texto');
+                const prodCat = (card.getAttribute('data-categoria') || '').toLowerCase().trim();
+                const prodCatOrig = (card.getAttribute('data-categoria-orig') || '').toLowerCase().trim();
+                const prodTexto = (card.getAttribute('data-texto') || '').toLowerCase().trim();
 
-                const coincideCategoria = (categoriaSeleccionada === 'todas') || prodCat.includes(categoriaSeleccionada);
+                let coincideCategoria = false;
+                if (categoriaSeleccionada === 'todas') {
+                    coincideCategoria = true;
+                } else {
+                    coincideCategoria = (prodCat === categoriaSeleccionada) ||
+                                        (prodCatOrig === categoriaSeleccionada) ||
+                                        prodCat.includes(categoriaSeleccionada) ||
+                                        prodCatOrig.includes(categoriaSeleccionada) ||
+                                        categoriaSeleccionada.includes(prodCat) ||
+                                        categoriaSeleccionada.includes(prodCatOrig);
+                }
+
                 const coincideTexto = !query || prodTexto.includes(query);
 
                 card.style.display = (coincideCategoria && coincideTexto) ? 'flex' : 'none';
@@ -1013,33 +1036,40 @@
         function obtenerTallasParaProducto(nombre, categoria, precio) {
             const texto = (nombre + ' ' + categoria).toLowerCase();
           
+            // Si el nombre ya trae una talla explícita en paréntesis ej: (38) o (M)
             const tallaParentesis = nombre.match(/\((.*?)\)/);
             if (tallaParentesis) {
                 return [tallaParentesis[1].toUpperCase()];
             }
 
+            // 1. Botas Tallas Especiales 43 y 44 (código y precio mayor a S/ 45)
             if (texto.includes('bota') && (texto.includes('43') || texto.includes('44') || precio >= 48)) {
                 return ['43', '44'];
             }
 
+            // 2. Botas Estándar de Varón o Dama (Precio normal S/ 45.00: estrictamente de 36 a 42)
             if (texto.includes('bota')) {
                 return ['36', '37', '38', '39', '40', '41', '42'];
             }
 
+            // 3. Calzado / Zapatos de Dama
             const esDama = /\b(d|d\.|dama|mujer)\b/i.test(nombre) || texto.includes('tobillera');
             if (esDama && (texto.includes('zapato') || texto.includes('sandalia') || texto.includes('calzado') || texto.includes('media'))) {
                 return ['35', '36', '37', '38', '39'];
             }
 
+            // 4. Chuteras y deportivo
             if (texto.includes('chutera') || texto.includes('zapatilla') || texto.includes('futbol')) {
                 return ['36', '37', '38', '39', '40', '41', '42', '43'];
             }
 
+            // 5. Calzado general varón estándar
             if (texto.includes('calzado') || texto.includes('zapato') || texto.includes('venus')) {
                 return ['38', '39', '40', '41', '42'];
             }
 
-            if (texto.includes('ropa') || texto.includes('polera') || texto.includes('short') || texto.includes('bermuda') || texto.includes('faja') || texto.includes('pantalon')) {
+            // 6. Ropa / Prendas textiles / Pantalones
+            if (texto.includes('ropa') || texto.includes('polera') || texto.includes('short') || texto.includes('bermuda') || texto.includes('faja') || texto.includes('pantalon') || texto.includes('pantalón')) {
                 return ['S', 'M', 'L', 'XL', 'Estándar'];
             }
 
@@ -1210,11 +1240,11 @@ ${detalles}
             if (tipo === 'asesor') {
                 mensaje =
 `╔══════════════════════════════╗
-  🙋‍♂️️ *CONSULTA CON ASESOR DE VENTAS*
+  🙋‍♂️ *CONSULTA CON ASESOR DE VENTAS*
 ╚══════════════════════════════╝
 🏢 *MULTISERVICIOS EL MAYORISTA*
 
-Hola, me encuentro navegando en su tienda virtual oficial y deseo realizar una consulta sobre disponibilidad de productos, tallas o compras inmediatas. 🛍`;
+Hola, me encuentro navegando en su tienda virtual oficial y deseo realizar una consulta sobre disponibilidad de productos, tallas o compras inmediatas. 🛍️`;
             } else {
                 mensaje =
 `╔══════════════════════════════╗
@@ -1244,6 +1274,7 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
             const totalSoles = carrito.reduce((sum, item) => sum + item.subtotal, 0).toFixed(2);
             const totalArticulos = carrito.reduce((sum, item) => sum + item.cantidad, 0);
 
+            // Disparo de auto-impresión en la computadora
             fetch('/api/imprimir_comanda', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1256,6 +1287,7 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
                 })
             }).catch(err => console.log('Error enviando a imprimir:', err));
 
+            // Envío formateado completo a WhatsApp
             let detalle = carrito.map((item, idx) => {
                 return `🛍️ *ITEM ${idx + 1}:*${item.nombre.toUpperCase()}\n` +
                        `   ▫️ *Cantidad:* ${item.cantidad} unidad(es)\n` +
@@ -1275,7 +1307,7 @@ Hola, me comunico desde la tienda virtual. Deseo consultar precios por docena/ca
 🤝 *Alianza con Importadores y Fabricantes*
 
 👤 *DATOS DEL COMPRADOR*
-▪️️ *Cliente:* ${nombre}
+▪️ *Cliente:* ${nombre}
 ▪️ *Comprobante Solicitado:* ${comprobante}
 ▪️ *Ruta Local de Entrega:* ${ruta}
 
